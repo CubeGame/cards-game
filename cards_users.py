@@ -138,6 +138,7 @@ def cli_register(path=None):
 
     if os.path.isfile(os.path.join(path, name)):
         print("Username taken")
+        return
 
     if len(word) == 0:
         print("Password not long enough")

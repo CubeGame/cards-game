@@ -37,28 +37,22 @@ class Menu:
 
 def user_play():
     print("Play")
-    print()
-    print("Player 1")
-    p1 = cli_login()
-    if not bool(p1[0]):
-        return
-    p1_name = p1[1].name
 
-    print()
-    
-    print("Player 2")
-    p2 = cli_login()
-    if not bool(p2[0]):
-        return
-    p2_name = p2[1].name
+    players = []
+    for i in (0,1):
+        print("Player", i+1)
+        player = cli_login()
+        if player is None:
+            print("Ending game")
+            return
+        else:
+            players.append(player)
 
-    print()
-
-    if p1[1] == p2[1]:
+    if players[0] == players[1]:
         print("Can't use the same account")
         return
     
-    p1_outcome, l1, l2 = play(n1=p1_name, n2=p2_name)
+    p1_outcome, l1, l2 = play(n1=players[0].name, n2=players[1].name)
 
     if not os.path.isfile("hs.txt"):
         open("hs.txt", "w").close()
@@ -73,8 +67,8 @@ def user_play():
             except:
                 pass
 
-    highscores.append((p1_name, l1))
-    highscores.append((p2_name, l2))
+    highscores.append((players[0].name, l1))
+    highscores.append((players[1].name, l2))
 
     highscores = sorted(highscores, key=lambda x: x[1], reverse=True)
 
