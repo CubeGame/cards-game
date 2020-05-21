@@ -1,7 +1,7 @@
 from cards_users import cli_login, cli_register, cli_delete
 from cards_logic import play
-
 import os
+from sys import stderr
 
 class Menu:
     def __init__(self, name, options=dict()):
@@ -22,11 +22,15 @@ class Menu:
             choice = input("> ").strip()
             if choice in self.options:
                 print()
-                o = self.options[choice]()
+                o = 0
+                try:
+                    o = self.options[choice]()
+                except KeyboardInterrupt:
+                    print("Stopped on Keyboard Interrupt", file=stderr)
                 if o == 1:
                     break
             else:
-                print("That was not a valid command")
+                print("That was not a valid command", file=stderr)
             print()
         print("Exited from menu")
 
@@ -43,16 +47,16 @@ def user_play():
         print("Player", i+1)
         player = cli_login()
         if player is None:
-            print("Ending game")
+            print("Ending game", file=stderr)
             return
         else:
             players.append(player)
 
     if players[0] == players[1]:
-        print("Can't use the same account")
+        print("Can't use the same account", file=stderr)
         return
     
-    p1_outcome, l1, l2 = play(n1=players[0].name, n2=players[1].name)
+    _, l1, l2 = play(n1=players[0].name, n2=players[1].name)
 
     if not os.path.isfile("hs.txt"):
         open("hs.txt", "w").close()
@@ -75,7 +79,7 @@ def user_play():
     print()
     print("Highscores: ")
     with open("hs.txt", "w") as f:
-        for index, (name, score) in enumerate(highscores[:10]):
+        for index, (name, score) in enumerate(highscores[:5]):
             print("{} {:>8} {:>2}".format(index+1, name, score))
             print(name, score, sep=",", file=f)
 

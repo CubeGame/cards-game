@@ -130,10 +130,16 @@ def cli_register(path=None):
     print("Register")
     path = users_dir(path)
 
-    name = input("Username: ")
-    word = getpass()
+    print("Whitespace before and after will be removed")
+    name = input("Username: ").strip()
+    word = getpass().strip()
+    
     if len(name) == 0:
         print("Username not long enough")
+        return
+
+    if len(name) > 8:
+        print("Username is too long (8 is the maximum length)")
         return
 
     if os.path.isfile(os.path.join(path, name)):
