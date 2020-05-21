@@ -152,4 +152,7 @@ def cli_delete(path=None):
 
     name = input("Username: ")
     u = User.find(name)
-    u.cli_delete(path)
+    if isinstance(u, User):
+        u.cli_delete(path)
+    else:
+        print("User not found")
