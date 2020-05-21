@@ -17,7 +17,7 @@ class Menu:
         while self.loop:
             print("{}:".format(self.name))
             for o in self.options.keys():
-                print(o)
+                print("*", o)
 
             choice = input("> ").strip()
             if choice in self.options:
@@ -82,13 +82,13 @@ def user_play():
     print("Highscores: ")
     with open("hs.txt", "w") as f:
         for index, (name, score) in enumerate(highscores[:10]):
-            print(index+1, name, score, sep=": ")
+            print("{} {:>8} {:>2}".format(index+1, name, score))
             print(name, score, sep=",", file=f)
 
 main = Menu("Main Menu", options={
     "register" : cli_register,
     "delete" : cli_delete,
-    "play" :user_play
+    "play" : user_play
     })
 
 main.run()

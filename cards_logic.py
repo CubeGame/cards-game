@@ -54,6 +54,8 @@ class Outcome(Enum):
 
 
 def play(n1="Player 1", n2="Player 2"):
+    # n1 and n2 are assumed to have a length <= 8, It won't break if they do
+
     if n1 == n2:
         print("Can't use the same name")
         return
@@ -67,17 +69,17 @@ def play(n1="Player 1", n2="Player 2"):
     turn = 0
     while len(deck) >= 2:
         turn += 1
-        print("Turn #{:d}".format(turn))
+        print("_\nTurn #{:d}".format(turn))
 
-        sleep(0.5)
+        sleep(1)
         print()
 
         cards = deck.pop(), deck.pop()
         card1, card2 = cards
 
         for i, name in enumerate(ns):
-            print("{}: {}".format(name, cards[i]))
-            sleep(0.5)
+            print("{:>8} ({:>2}): {}".format(name, len(hs[i]), cards[i]))
+            sleep(1)
 
         print()
 
@@ -87,63 +89,26 @@ def play(n1="Player 1", n2="Player 2"):
         print("{} beats {}".format(card1, card2))
         hs[winner].extend(cards)
         
-        sleep(0.5)
+        sleep(1)
         
         print(ns[winner], "won")
 
-        sleep(0.5)
-        print()
-
-    sleep(1)
-
-    print("="*turn)
+        sleep(1)
 
     h1, h2 = hs
     l1, l2 = len(h1), len(h2)
     ls = l1, l2
     p1_outcome = Outcome.from_comparison(l1, l2)
 
-    print("Totals:")
+    print("_\nTotals:")
     for i, name in enumerate(ns):
-        print("{}: {}".format(name, ls[i]))
+        print("{:>8}: {}".format(name, ls[i]))
         sleep(0.5)
 
     print()
 
-    if p1_outcome == Outcome.DRAW: # There is a 1 in 2^15 (32768) chance of this happening
-        assert l1 == l2
-
-        print("Drew:")
-        print("Coin toss:")
-
-        chooser = getrandbits(1)
-
-        choose_heads = None
-        while choose_heads is None:
-            print("Player", chooser + 1, ": heads or tails?")
-            ht = input("H/T: ").strip().upper()
-            
-            if ht in ("H", "HEAD", "HEADS"):
-                choose_heads = True
-            elif ht in ("T", "TAIL", "TAILS"):
-                choose_heads = False
-            else:
-                print("That isn't a valid choice, try again")
-
-        print("Tossing coin...")
-
-        sleep(1)
-        
-        face_heads = getrandbits(1)
-        if face_heads: print("HEADS!")
-        else: print("TAILS!")
-        print()
-
-        winner = (chooser - choose_heads == face_heads) % 1
-        
-    else:
-        assert int(p1_outcome) in (1,2)
-        winner = 2 - int(p1_outcome)
+    assert int(p1_outcome) in (1,2)
+    winner = 2 - int(p1_outcome)
 
     print(ns[winner], "won!")
     print("Cards: ")

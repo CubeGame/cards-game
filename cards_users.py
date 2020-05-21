@@ -1,9 +1,11 @@
 import os
 import hashlib
 from getpass import getpass
+import time
 
 def h(word, salt):
-    return hashlib.pbkdf2_hmac("sha256", word, salt, 100000, dklen=1024)
+    # takes about 5 seconds
+    return hashlib.pbkdf2_hmac("sha256", word, salt, 500000, dklen=1024)
 
 def encode(string):
     return string.encode("utf-8")
@@ -116,13 +118,13 @@ def cli_login(path=None):
     if isinstance(u, User):
         if u._verify(encode(word)):
             print("Matched")
-            return (True, u)
+            return u
         else:
             print("Does not match")
-            return (False, None)
+            return None
     else:
         print("Does not exist")
-        return (False, None)
+        return None
 
 def cli_register(path=None):
     print("Register")
