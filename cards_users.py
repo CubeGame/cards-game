@@ -86,7 +86,7 @@ class User:
         return False
         
     def cli_delete(self, path, word=None):
-        path = users_path(path)
+        path = users_dir(path)
 
         if not os.path.isdir(path):
             os.mkdir(path)
