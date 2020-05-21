@@ -1,5 +1,5 @@
-from cards_users import User, cli_login, cli_register, cli_delete
-from cards_logic import play, Outcome
+from cards_users import cli_login, cli_register, cli_delete
+from cards_logic import play
 
 import os
 
